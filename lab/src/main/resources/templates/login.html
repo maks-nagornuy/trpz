@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вхід</title>
+</head>
+<body>
+
+<h1>Авторизація</h1>
+
+<form th:action="@{/user/login}" method="post">
+    <label>Email:</label>
+    <input type="text" name="email" /><br/><br/>
+    <label>Пароль:</label>
+    <input type="password" name="password" /><br/><br/>
+
+    <button type="submit">Увійти</button>
+</form>
+
+<br>
+<a href="/user/create">Реєстрація</a>
+<a href="/archive/archives">Перейти до архівів</a>
+
+</body>
+</html>

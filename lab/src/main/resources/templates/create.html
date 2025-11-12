@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Створити користувача</title>
+</head>
+<body>
+    <h1>Створення користувача</h1>
+
+    <form th:action="@{/user/create}" th:object="${user}" method="post">
+        <label>Email:</label>
+        <input type="text" th:field="*{email}" /><br/><br/>
+
+        <label>Пароль:</label>
+        <input type="password" th:field="*{password}" /><br/><br/>
+
+        <label>Роль:</label>
+        <input type="text" th:field="*{role}" /><br/><br/>
+
+        <button type="submit">Створити</button>
+    </form>
+
+    <br/>
+    <a href="/user/users">Список користувачів</a>
+	<a href="/archive/archives">Список архівів</a>
+</body>
+</html>

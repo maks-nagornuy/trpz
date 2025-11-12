@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Archive List</title>
+	<style>
+	        body { font-family: Arial; margin: 20px; }
+	        table { border-collapse: collapse; width: 50%; }
+	        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+	        th { background-color: #f2f2f2; }
+	    </style>
+</head>
+<body>
+    <h1>Список архівів</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Тип</th>
+            <th>Checksum</th>
+            <th>User ID</th>
+        </tr>
+        <tr th:each="a : ${archives}">
+            <td th:text="${a.id}"></td>
+            <td th:text="${a.name}"></td>
+            <td th:text="${a.archiveTypeId}"></td>
+            <td th:text="${a.checksum}"></td>
+            <td th:text="${a.userId}"></td>
+        </tr>
+    </table>
+
+    <br/>
+	<a href="/user/create"> Створити нового користувача</a>
+    <a href="/archive/create"> Створити новий архів</a>
+</body>
+</html>
