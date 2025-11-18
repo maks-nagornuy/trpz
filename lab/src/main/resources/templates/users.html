@@ -11,6 +11,12 @@
     </style>
 </head>
 <body>
+
+<!-- Кнопка Вийти -->
+<form th:action="@{/logout}" method="post" style="position:absolute; top:20px; right:20px;">
+    <button type="submit">Вийти</button>
+</form>
+
 <h2>Список користувачів</h2>
 
 <table>
@@ -23,13 +29,16 @@
     </thead>
     <tbody>
         <tr th:each="user : ${users}">
-            <td th:text="${user.id}">1</td>
-            <td th:text="${user.email}">example@gmail.com</td>
-            <td th:text="${user.role}">USER</td>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role}"></td>
         </tr>
     </tbody>
 </table>
-<a href="/user/create"> Створити нового користувача</a>
-<a href="/archive/create"> Створити новий архів</a>
+
+<br/>
+<a href="/user/create">Створити нового користувача</a>
+<a href="/archive/archives">Список архівів</a>
+
 </body>
 </html>

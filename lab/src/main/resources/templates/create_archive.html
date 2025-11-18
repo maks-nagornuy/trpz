@@ -5,29 +5,36 @@
     <title>Create Archive</title>
 </head>
 <body>
-    <h1>Створити архів</h1>
 
-    <form th:action="@{/archive/create}" th:object="${archive}" method="post" enctype="multipart/form-data">
+<!-- Кнопка Вийти -->
+<form th:action="@{/logout}" method="post" style="position:absolute; top:20px; right:20px;">
+    <button type="submit">Вийти</button>
+</form>
 
-        <label>Назва архіву:</label><br/>
-        <input type="text" th:field="*{name}" /><br/><br/>
+<h1>Створити архів</h1>
 
-        <label>Тип архіву:</label><br/>
-        <select th:field="*{archiveTypeId}">
-            <option th:each="type : ${archiveTypes}" th:value="${type}" th:text="${type}"></option>
-        </select><br/><br/>
+<form th:action="@{/archive/create}" th:object="${archive}" method="post" enctype="multipart/form-data">
 
-        <label>Користувач ID:</label><br/>
-        <input type="text" th:field="*{userId}" /><br/><br/>
+    <label>Назва архіву:</label><br/>
+    <input type="text" th:field="*{name}" /><br/><br/>
 
-        <label>Файли для архіву:</label><br/>
-        <input type="file" name="files" multiple /><br/><br/>
+    <label>Тип архіву:</label><br/>
+    <select th:field="*{archiveTypeId}">
+        <option th:each="type : ${archiveTypes}" th:value="${type}" th:text="${type}"></option>
+    </select><br/><br/>
 
-        <button type="submit">Створити архів</button>
-    </form>
+    <label>Користувач ID:</label><br/>
+    <input type="text" th:field="*{userId}" /><br/><br/>
 
-    <br/>
-	<a href="/user/users">Список користувачів</a>
-    <a href="/archive/archives">Список архівів</a>
+    <label>Файли для архіву:</label><br/>
+    <input type="file" name="files" multiple /><br/><br/>
+
+    <button type="submit">Створити архів</button>
+</form>
+
+<br/>
+<a href="/user/users">Список користувачів</a>
+<a href="/archive/archives">Список архівів</a>
+
 </body>
 </html>

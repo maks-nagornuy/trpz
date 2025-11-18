@@ -5,23 +5,31 @@
     <title>Створити користувача</title>
 </head>
 <body>
-    <h1>Створення користувача</h1>
 
-    <form th:action="@{/user/create}" th:object="${user}" method="post">
-        <label>Email:</label>
-        <input type="text" th:field="*{email}" /><br/><br/>
+<!-- Кнопка Вийти -->
+<form th:action="@{/logout}" method="post" style="position:absolute; top:20px; right:20px;">
+    <button type="submit">Вийти</button>
+</form>
 
-        <label>Пароль:</label>
-        <input type="password" th:field="*{password}" /><br/><br/>
+<h1>Створення користувача</h1>
 
-        <label>Роль:</label>
-        <input type="text" th:field="*{role}" /><br/><br/>
+<form th:action="@{/user/create}" th:object="${user}" method="post">
 
-        <button type="submit">Створити</button>
-    </form>
+    <label>Email:</label><br/>
+    <input type="text" th:field="*{email}" /><br/><br/>
 
-    <br/>
-    <a href="/user/users">Список користувачів</a>
-	<a href="/archive/archives">Список архівів</a>
+    <label>Пароль:</label><br/>
+    <input type="password" th:field="*{password}" /><br/><br/>
+
+    <label>Роль:</label><br/>
+    <input type="text" th:field="*{role}" /><br/><br/>
+
+    <button type="submit">Створити</button>
+</form>
+
+<br/>
+<a href="/user/users">Список користувачів</a>
+<a href="/archive/archives">Список архівів</a>
+
 </body>
 </html>

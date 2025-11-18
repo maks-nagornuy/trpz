@@ -9,9 +9,10 @@
 <h1>Авторизація</h1>
 
 <form th:action="@{/user/login}" method="post">
-    <label>Email:</label>
+    <label>Email:</label><br/>
     <input type="text" name="email" /><br/><br/>
-    <label>Пароль:</label>
+
+    <label>Пароль:</label><br/>
     <input type="password" name="password" /><br/><br/>
 
     <button type="submit">Увійти</button>
@@ -19,7 +20,6 @@
 
 <br>
 <a href="/user/create">Реєстрація</a>
-<a href="/archive/archives">Перейти до архівів</a>
 
 </body>
 </html>
