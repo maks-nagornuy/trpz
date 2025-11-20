@@ -3,16 +3,26 @@ package com.example.demo.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.example.demo.visitor.ArchiveElement;
+import com.example.demo.visitor.ArchiveVisitor;
+
 @Document(collection = "broken_archives")
-public class BreakArchive {
+public class BreakArchive implements ArchiveElement {
+
     @Id
     private String id;
     private String name;
     private long size;
-
     private String archiveId;
 
     public BreakArchive() {}
+
+    @Override
+    public void accept(ArchiveVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    // --- getters and setters ---
 
     public String getId() {
         return id;

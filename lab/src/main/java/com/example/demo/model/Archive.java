@@ -2,23 +2,40 @@ package com.example.demo.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.example.demo.visitor.ArchiveElement;
+import com.example.demo.visitor.ArchiveVisitor;
+
 import java.util.Set;
 
 @Document(collection = "archives")
-public class Archive {
+public class Archive implements ArchiveElement {
 
     @Id
-    private String id;               
-    private String name;            
-    private String checksum;         
-    private String archiveTypeId;    
-    private String userId;           
-    private Set<Meta> meta;          
-    private Set<String> breakArchiveIds; 
+    private String id;
+    private String name;
+    private String checksum;
+    private String archiveTypeId;
+    private String userId;
+    private Set<Meta> meta;
+    private Set<String> breakArchiveIds;
 
     public Archive() {}
 
+    @Override
+    public void accept(ArchiveVisitor visitor) {
+        visitor.visit(this);
 
+        if (meta != null) {
+            for (Meta m : meta) {
+                m.accept(visitor);
+            }
+        }
+
+        // Якщо BreakArchive будуть додані — теж сюди
+    }
+
+    // Гетери та сетери нижче
 
     public String getId() {
         return id;

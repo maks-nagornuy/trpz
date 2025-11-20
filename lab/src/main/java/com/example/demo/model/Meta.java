@@ -3,16 +3,25 @@ package com.example.demo.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.example.demo.visitor.ArchiveElement;
+import com.example.demo.visitor.ArchiveVisitor;
+
 @Document(collection = "meta")
-public class Meta {
+public class Meta implements ArchiveElement {
 
     @Id
-    private String id;          
-    private String fileName;    
-    private long size;          
+    private String id;
+    private String fileName;
+    private long size;
 
     public Meta() {}
 
+    @Override
+    public void accept(ArchiveVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    // --- getters and setters ---
 
     public String getId() {
         return id;
