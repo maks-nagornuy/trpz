@@ -22,8 +22,6 @@ public class BreakArchive implements ArchiveElement {
         visitor.visit(this);
     }
 
-    // --- getters and setters ---
-
     public String getId() {
         return id;
     }

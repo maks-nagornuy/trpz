@@ -2,34 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Створити користувача</title>
+    <title>Реєстрація</title>
 </head>
 <body>
 
-<!-- Кнопка Вийти -->
-<form th:action="@{/logout}" method="post" style="position:absolute; top:20px; right:20px;">
-    <button type="submit">Вийти</button>
-</form>
-
-<h1>Створення користувача</h1>
+<h1>Реєстрація</h1>
 
 <form th:action="@{/user/create}" th:object="${user}" method="post">
 
-    <label>Email:</label><br/>
-    <input type="text" th:field="*{email}" /><br/><br/>
-
-    <label>Пароль:</label><br/>
-    <input type="password" th:field="*{password}" /><br/><br/>
-
-    <label>Роль:</label><br/>
-    <input type="text" th:field="*{role}" /><br/><br/>
-
+    <label>Email:</label>
+    <input type="text" th:field="*{email}" placeholder="user@example.com" required />
+	<br>
+	<br>
+    <label>Пароль:</label>
+    <input type="password" th:field="*{password}" placeholder="******" required />
+	<br>
+	<br>
+    <label>Роль:</label>
+    <select th:field="*{role}" required>
+        <option value="USER">Користувач</option>
+        <option value="ADMIN">Адмін</option>
+    </select>
+	<br>
+	<br>
     <button type="submit">Створити</button>
 </form>
+	
+	<br>
+	<a href="/user/login">Авторизуватися</a>
 
-<br/>
-<a href="/user/users">Список користувачів</a>
-<a href="/archive/archives">Список архівів</a>
 
 </body>
 </html>

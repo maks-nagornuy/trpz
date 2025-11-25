@@ -21,8 +21,6 @@ public class Meta implements ArchiveElement {
         visitor.visit(this);
     }
 
-    // --- getters and setters ---
-
     public String getId() {
         return id;
     }

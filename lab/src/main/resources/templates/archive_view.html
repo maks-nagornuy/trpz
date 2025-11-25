@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> Деталі</title>
+
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f1f1f1; }
+        .top-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end; }
+        .folder-link { font-weight: bold; color: #0056b3; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<form th:action="@{/logout}" method="post" style="position:absolute; top:20px; right:20px;">
+    <button type="submit">Вийти</button>
+</form>
+
+<h2>
+    Архів: <span th:text="${archive.name}"></span>
+    <small th:text="'(' + ${archive.archiveTypeId} + ')'"></small>
+</h2>
+
+<div th:if="${param.verify}" style="margin: 20px 0; text-align: center; padding: 15px; border: 1px solid #ccc; border-radius: 5px;">
+    <div th:if="${param.verify[0] == 'true'}" style="color:green; font-weight:bold; background-color: #d4edda; padding: 10px; border-radius: 4px;">
+        Архів цілий
+    </div>
+    <div th:if="${param.verify[0] == 'false'}" style="color:red; font-weight:bold; background-color: #f8d7da; padding: 10px; border-radius: 4px;">
+        Архів пошкоджений
+    </div>
+</div>
+
+<a th:href="@{'/archive/view/' + ${archive.id}}">ROOT</a>
+<span th:if="${currentPath != ''}">
+    / <span th:text="${currentPath}"></span>
+    <a th:if="${currentPath.contains('/')}"
+       th:href="@{'/archive/view/' + ${archive.id}(path=${currentPath.substring(0, currentPath.lastIndexOf('/'))})}">
+        Вгору
+    </a>
+    <a th:if="${!currentPath.contains('/')}"
+       th:href="@{'/archive/view/' + ${archive.id}}">
+        Вгору
+    </a>
+</span>
+
+<div class="top-actions">
+
+    <div>
+        <form th:action="@{'/archive/edit/' + ${archive.id} + '/add-file'}"
+              method="post" enctype="multipart/form-data">
+            <input type="hidden" name="path" th:value="${currentPath}"/>
+            <input type="file" name="file" required />
+            <button type="submit">Додати файл</button>
+        </form>
+    </div>
+
+    <div>
+        <form th:action="@{'/archive/edit/' + ${archive.id} + '/create-folder'}" method="post">
+            <input type="hidden" name="path" th:value="${currentPath}"/>
+            <input type="text" name="folderName" placeholder="Назва папки" required/>
+            <button type="submit">Створити папку</button>
+        </form>
+    </div>
+
+    <div>
+        <form th:action="@{'/archive/check/' + ${archive.id}}" method="post">
+            <input type="hidden" name="path" th:value="${currentPath}"/>
+            <button type="submit">Перевірити цілісність</button>
+        </form>
+    </div>
+
+    <div>
+        <form th:action="@{'/archive/split/' + ${archive.id}}" method="post" style="display:flex; align-items:center; gap:5px;">
+            <label>Розбиття:</label>
+				<input type="number" name="sizeMb" value="1" min="1" required style="width:50px; padding:5px;" />
+            <button type="submit">Розбити</button>
+        </form>
+    </div>
+
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:if="${nodes.empty}">
+        <td colspan="3">Ця папка порожня</td>
+    </tr>
+
+    <tr th:each="n : ${nodes}">
+        <td>
+            <span th:if="${n.dir}">📁
+                <a th:href="@{'/archive/view/' + ${archive.id}(path=${n.path})}"
+                   th:text="${n.name}" class="folder-link"></a>
+            </span>
+            <span th:if="${!n.dir}">📄 <span th:text="${n.name}"></span></span>
+        </td>
+
+        <td th:text="${n.dir ? '-' : n.size}"></td>
+
+        <td>
+            <form th:if="${!n.dir}" th:action="@{'/archive/edit/' + ${archive.id} + '/delete-file'}" method="post" style="display:inline;">
+                <input type="hidden" name="path" th:value="${currentPath}"/>
+                <input type="hidden" name="filePath" th:value="${n.path}"/>
+                <button type="submit" onclick="return confirm('Видалити файл?');">Видалити</button>
+            </form>
+
+            <form th:if="${n.dir}" th:action="@{'/archive/edit/' + ${archive.id} + '/delete-folder'}" method="post" style="display:inline;">
+                <input type="hidden" name="path" th:value="${currentPath}"/>
+                <input type="hidden" name="folderPath" th:value="${n.path}"/>
+                <button type="submit" onclick="return confirm('Видалити папку?');">Видалити</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <a th:href="@{'/archive/download/' + ${archive.id}}">Завантажити архів</a>
+    <a href="/archive/archives">Назад</a>
+</div>
+
+</body>
+</html>

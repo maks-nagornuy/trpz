@@ -10,8 +10,8 @@ public class RarStrategyArchive implements StrategyArchive {
 
     private final RarAdapter rarAdapter;
 
-    public RarStrategyArchive(String winrarPath) {
-        this.rarAdapter = new RarAdapter(winrarPath);
+    public RarStrategyArchive() {
+        this.rarAdapter = new RarAdapter(); 
     }
 
     @Override

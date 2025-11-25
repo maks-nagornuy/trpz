@@ -31,12 +31,7 @@ public class Archive implements ArchiveElement {
                 m.accept(visitor);
             }
         }
-
-        // Якщо BreakArchive будуть додані — теж сюди
     }
-
-    // Гетери та сетери нижче
-
     public String getId() {
         return id;
     }

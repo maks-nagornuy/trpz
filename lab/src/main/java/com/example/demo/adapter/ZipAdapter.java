@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class ZipAdapter implements StrategyArchive {
-
     @Override
     public void compress(List<File> files, String outputPath) throws IOException {
         try (ZipArchiveOutputStream zipOut = new ZipArchiveOutputStream(new FileOutputStream(outputPath))) {

@@ -2,31 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Archive</title>
+    <title>Створення архіву</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        label { font-weight: bold; }
+        input, select { margin-bottom: 10px; width: 250px; }
+    </style>
 </head>
 <body>
 
-<h1>Створити архів</h1>
+<!-- Кнопка Вийти -->
+<form th:action="@{/logout}" method="post" style="position:absolute; top:20px; right:20px;">
+    <button type="submit">Вийти</button>
+</form>
+
+<h1>Створення архіву</h1>
 
 <form th:action="@{/archive/create}" th:object="${archive}" method="post" enctype="multipart/form-data">
 
     <label>Назва архіву:</label><br/>
-    <input type="text" th:field="*{name}" /><br/><br/>
+    <input type="text" th:field="*{name}" required/><br/><br/>
 
     <label>Тип архіву:</label><br/>
     <select th:field="*{archiveTypeId}">
-        <option th:each="type : ${archiveTypes}" th:value="${type}" th:text="${type}"></option>
-    </select><br/><br/>
+        <option value="zip">zip</option>
+        <option value="tar.gz">tar.gz</option>
+        <option value="rar">rar</option>
+    </select>
+    <br/><br/>
 
-    <label>Файли для архіву:</label><br/>
-    <input type="file" name="files" multiple /><br/><br/>
+    <label>Файли:</label><br/>
+    <input type="file" name="files" multiple required/><br/><br/>
 
-    <button type="submit">Створити архів</button>
+    <button type="submit">Створити</button>
 </form>
 
 <br/>
 <a href="/archive/archives">Список архівів</a>
-<a href="/user/users">Список користувачів</a>
 
 </body>
 </html>

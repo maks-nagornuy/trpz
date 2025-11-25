@@ -11,7 +11,6 @@ public class User {
     private String password;
     private String role;
 
-    // Ми можемо зберігати ID архівів користувача
     private Set<String> archiveIds;
 
     public User() {}

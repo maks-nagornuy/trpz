@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Частини архіву</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .part-item { 
+            padding: 10px; 
+            border-bottom: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .btn { 
+            padding: 5px 10px; 
+            background-color: #007bff; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 3px; 
+        }
+        .back-link { margin-top: 20px; display: inline-block; text-decoration: none; color: #007bff;}
+    </style>
+</head>
+<body>
+
+<p>Архів: <strong th:text="${archive.name}"></strong></p>
+
+<div>
+    <div th:each="part : ${parts}">
+        <div>
+             <span th:text="${part.name}">archive.zip.001</span>
+           <span  
+                  th:text="'(' + ${#numbers.formatInteger(part.size / 1024, 0)} + ' KB)'"></span>
+        </div>
+		
+        <a th:href="@{'/archive/download-part/' + ${archive.id} + '?name=' + ${part.name}}" >
+			 Завантажити</a>
+    </div>
+</div>
+
+<a th:href="@{'/archive/view/' + ${archive.id}}"> Назад</a>
+
+</body>
+</html>

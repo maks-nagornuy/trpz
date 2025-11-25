@@ -6,9 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
-    
-    // ----- ВИПРАВЛЕНО ТУТ -----
-    // Spring тепер зможе знайти поле 'email' у вашій моделі User
     User findByEmail(String email);
-    // -------------------------
 }

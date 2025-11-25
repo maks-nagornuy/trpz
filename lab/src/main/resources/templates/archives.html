@@ -1,44 +1,58 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Archive List</title>
+    <title>Мої архіви</title>
     <style>
-        body { font-family: Arial; margin: 20px; }
-        table { border-collapse: collapse; width: 50%; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
     </style>
 </head>
 <body>
 
-<!-- Кнопка Вийти -->
 <form th:action="@{/logout}" method="post" style="position:absolute; top:20px; right:20px;">
     <button type="submit">Вийти</button>
 </form>
 
-<h1>Список архівів</h1>
+<h1>Мої архіви</h1>
 
-<table>
+<div th:if="${archives.empty}">
+    <h3>Ви ще не створили жодного архіву</h3>
+    <p>Натисніть кнопку нижче, щоб створити свій перший архів.</p>
+</div>
+
+<table th:if="${!archives.empty}">
+    <thead>
     <tr>
-        <th>ID</th>
         <th>Назва</th>
         <th>Тип</th>
         <th>Checksum</th>
-        <th>User ID</th>
+        <th style="width: 300px;">Дії</th>
     </tr>
-    <tr th:each="a : ${archives}">
-        <td th:text="${a.id}"></td>
-        <td th:text="${a.name}"></td>
-        <td th:text="${a.archiveTypeId}"></td>
-        <td th:text="${a.checksum}"></td>
-        <td th:text="${a.userId}"></td>
+    </thead>
+    <tbody>
+    <tr th:each="arch : ${archives}">
+        <td th:text="${arch.name}"></td>
+        <td th:text="${arch.archiveTypeId}"></td>
+        <td th:text="${arch.checksum}" style="word-break: break-all; max-width: 300px;"></td>
+        <td style="display: flex; align-items: center; gap: 5px;">
+            <a th:href="@{'/archive/view/' + ${arch.id}} ">Переглянути</a>
+            <a th:href="@{'/archive/download/' + ${arch.id}}">Завантажити</a>
+            <form th:action="@{'/archive/delete/' + ${arch.id}}" method="post" style="display:inline; margin:0;">
+                <button type="submit" onclick="return confirm('Видалити?');">Видалити</button>
+            </form>
+        </td>
     </tr>
+    </tbody>
 </table>
 
-<br/>
-<a href="/user/create">Створити нового користувача</a>
 <a href="/archive/create">Створити новий архів</a>
+
+<div th:if="${isAdmin}">
+    <a href="/user/users">Список користувачів</a>
+</div>
 
 </body>
 </html>

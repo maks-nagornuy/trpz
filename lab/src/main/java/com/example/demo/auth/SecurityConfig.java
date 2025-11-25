@@ -3,7 +3,7 @@ package com.example.demo.auth;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider; // 1. Імпорт
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,12 +25,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 2. Створюємо бін, який "знає" про ваш UserDetailsService
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService); // Вказуємо ваш сервіс
-        authProvider.setPasswordEncoder(passwordEncoder()); // Вказуємо шифратор
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
@@ -41,31 +40,41 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/archive/**",    // Дозволяємо архіви
-                        "/user/create",   // Дозволяємо сторінку реєстрації
-                        "/user/login"     // Дозволяємо сторінку логіну
-                ).permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-            	    .loginPage("/user/login")
-            	    .loginProcessingUrl("/user/login")
-            	    .usernameParameter("email")
-            	    .passwordParameter("password")
-            	    .defaultSuccessUrl("/archive/archives", true)
-            	    .permitAll()
-            	)
-            	.logout(logout -> logout
-            	    .logoutUrl("/logout")
-            	    .logoutSuccessUrl("/user/login?logout")
-            	    .permitAll()
-            	);
 
-        // 3. Кажемо Spring Security використовувати ваш бін
+        http
+                .csrf(csrf -> csrf.disable())
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/user/login",
+                                "/user/create",
+                                "/user/register",
+                                "/css/**",
+                                "/js/**"
+                        ).permitAll()
+
+                        // ONLY ADMIN
+                        .requestMatchers("/user/users").hasRole("ADMIN")
+
+                        // ALL OTHER -> logged users only
+                        .anyRequest().authenticated()
+                )
+
+                .formLogin(form -> form
+                        .loginPage("/user/login")
+                        .loginProcessingUrl("/user/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/archive/archives", true)
+                        .permitAll()
+                )
+
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/user/login?logout")
+                        .permitAll()
+                );
+
         http.authenticationProvider(authenticationProvider());
 
         return http.build();
